@@ -106,7 +106,7 @@ const userServices = {
 
             // Generar un JWT
             const token = jwt.sign(
-                { id_usuario: user.id_usuario, correo: user.correo, rol: user.rol },
+                { id_usuario: user.id_usuario, correo: user.correo, rol: user.rol, nombre: user.nombre, direccion: user.direccion, telefono: user.telefono },
                 process.env.JWT_SECRET,  // Asegúrate de tener tu clave secreta en .env
                 { expiresIn: '1h' }
             );
@@ -133,7 +133,8 @@ const userServices = {
         const payload = {
             id_usuario: user.id_usuario,
             correo: user.correo,
-            rol: user.rol
+            rol: user.rol,
+            nombre: user.nombre
         };
 
         // Se genera el token utilizando el secreto configurado

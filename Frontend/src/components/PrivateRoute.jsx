@@ -11,7 +11,7 @@ const PrivateRoute = ({ element, roleRequired }) => {
   }
 
   // Si el usuario no tiene el rol adecuado se redirige a home
-  if (roleRequired && user.role !== roleRequired) {
+  if (roleRequired && user.rol !== roleRequired) {
     return <Navigate to="/" />;
   }
 

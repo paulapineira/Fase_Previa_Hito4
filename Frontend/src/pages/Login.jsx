@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';  // Asegúrate de importar el contexto
+import { useAuth } from '../context/AuthContext'; 
 import './Login.css';
 
+
 const Login = () => {
-  const { login } = useAuth();  // Usar el login del AuthContext
+  const { login } = useAuth();  // se usa el login del AuthContext
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -49,3 +50,5 @@ const Login = () => {
 };
 
 export default Login;
+
+

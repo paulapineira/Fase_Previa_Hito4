@@ -1,4 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';  
+import { AuthProvider } from './context/AuthContext'; 
 import Navbar from './components/Navbar'; 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -12,38 +14,42 @@ import ProductDetail from './pages/ProductDetail';
 
 function App() {
   return (
-    <div>
-      {/* Navbar siempre va a estar visible porque tiene los botones para navegar */}
-      <Navbar />
+    <CartProvider>
+      <AuthProvider> 
+        <div>
+          {/* Navbar siempre va a estar visible porque tiene los botones para navegar */}
+          <Navbar />
 
-      <Routes>
-        {/* Ruta pública */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/product/:productId" element={<ProductDetail />} />
+          <Routes>
+            {/* Ruta pública */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/product/:productId" element={<ProductDetail />} />
 
-        {/* Rutas protegidas */}
-        <Route 
-          path="/profile-client" 
-          element={
-            <PrivateRoute element={<ProfileClient />} roleRequired="client" />
-          } 
-        />
-        <Route 
-          path="/profile-admin" 
-          element={
-            <PrivateRoute element={<ProfileAdmin />} roleRequired="admin" />
-          } 
-        />
+            {/* Rutas protegidas */}
+            <Route 
+              path="/profile-client" 
+              element={
+                <PrivateRoute element={<ProfileClient />} roleRequired="cliente" />
+              } 
+            />
+            <Route 
+              path="/profile-admin" 
+              element={
+                <PrivateRoute element={<ProfileAdmin />} roleRequired="administrador" />
+              } 
+            />
 
-        {/* Ruta de Mis Pedidos */}
-        <Route path="/my-orders" element={<MyOrders />} />
+            {/* Ruta de Mis Pedidos */}
+            <Route path="/my-orders" element={<MyOrders />} />
 
-        {/* Ruta de Mis Ventas (solo admin) */}
-        <Route path="/my-sales" element={<PrivateRoute element={<MySales />} roleRequired="admin" />} />
-      </Routes>
-    </div>
+            {/* Ruta de Mis Ventas (solo admin) */}
+            <Route path="/my-sales" element={<PrivateRoute element={<MySales />} roleRequired="administrador" />} />
+          </Routes>
+        </div>
+      </AuthProvider> 
+    </CartProvider> 
   );
 }
 

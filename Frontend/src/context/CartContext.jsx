@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { createContext, useContext, useState } from 'react';
 
 const CartContext = createContext();
@@ -24,7 +23,7 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  // Funcion para eliminar un producto del carrito
+  // Funcion para eliminar un producto del pedido
   const removeFromCart = (id_producto) => {
     setCart((prevCart) => {
       // Encontramos el producto que se está eliminando
@@ -43,13 +42,18 @@ export const CartProvider = ({ children }) => {
           return prevCart.filter((item) => item.id_producto !== id_producto); // Filtramos el producto para eliminarlo
         }
       }
-      return prevCart; // Si no se encuentra el producto, retornamos el carrito sin cambios
+      return prevCart; // Si no se encuentra el producto, retornamos el pedido sin cambios
     });
   };
   
+    // Función para limpiar el carrito
+    const clearCart = () => {
+      setCart([]);  // Limpiar el estado del carrito
+      localStorage.removeItem('cart');  // Limpiar el carrito en el localStorage si lo tenías guardado
+    };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart,clearCart }}>
       {children}
     </CartContext.Provider>
   );

@@ -1,38 +1,56 @@
-import { useCart } from '../context/CartContext'; 
-import ProductCard from '../components/ProductCard'; 
+import { useEffect, useState } from 'react';
 import './MySales.css';
 
 const MySales = () => {
-  const { cart, removeFromCart } = useCart(); // Usamos el carrito (si es que las ventas están asociadas al carrito)
+  const [pedidos, setPedidos] = useState([]);
+  const [loading, setLoading] = useState(true); // Para manejar el estado de carga
+  const [error, setError] = useState(null);
 
-  const handleSaleDetails = () => {
-    alert('Detalles de la venta');
-  };
+  useEffect(() => {
+    // Función para obtener los pedidos
+    const fetchPedidos = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/pedidos');
+        if (!response.ok) {
+          throw new Error('Error al obtener los pedidos');
+        }
+        const data = await response.json();
+        setPedidos(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPedidos();
+  }, []); // Este useEffect se ejecuta solo una vez al cargar el componente
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; 
+  }
 
   return (
     <div className="container mt-5">
-      <h2>Mis Ventas</h2>
-      {cart.length === 0 ? (
-        <p>No has realizado ventas aún.</p>
+      <h2>Mis ventas</h2>
+      {pedidos.length === 0 ? (
+        <p>No has realizado pedidos aún.</p> 
       ) : (
         <div className="row">
-          {/* Mostrar las "ventas" (productos vendidos) en tarjetas */}
-          {cart.map((sale) => (
-            <div key={sale.id_producto} className="col-12 col-md-4 mb-4">
-              <ProductCard
-                name={sale.nombre}
-                description={sale.descripcion}
-                price={sale.precio}
-                image={sale.imagen}
-                onAddToCart={() => removeFromCart(sale.id_producto)} // Función para eliminar del carrito
-              />
-              <div className="d-flex justify-content-between">
-                <button className="btn btn-danger" onClick={() => removeFromCart(sale.id_producto)}>
-                  Eliminar Venta
-                </button>
-                <button className="btn btn-primary" onClick={handleSaleDetails}>
-                  Ver detalles de la venta
-                </button>
+          {/* Mostrar los pedidos */}
+          {pedidos.map((pedido) => (
+            <div key={pedido.id_pedido} className="col-12 col-md-6 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Pedido #{pedido.id_pedido}</h5>
+                  <p className="card-text"><strong>Fecha del Pedido:</strong> {new Date(pedido.fecha_pedido).toLocaleString()}</p>
+                  <p className="card-text"><strong>Estado:</strong> {pedido.estado}</p>
+                  <p className="card-text"><strong>Dirección de Envío:</strong> {pedido.direccion_envio}</p>
+                </div>
               </div>
             </div>
           ))}

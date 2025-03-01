@@ -8,7 +8,11 @@ import { useState } from 'react';
 const MyOrders = () => {
   const { cart, removeFromCart, addToCart } = useCart()
   const [direccionEnvio, setDireccionEnvio] = useState('')
-  const { user } = useAuth(); // Acceder al usuario logueado desde el contexto
+  const { user } = useAuth(); // Acceder al usuario logueado desde el authcontext
+
+
+    // Calcular el total
+    const total = cart.reduce((acc, item) => acc + item.precio * item.quantity, 0);
 
   const handleCheckout = async () => {
     if (cart.length === 0) {
@@ -54,6 +58,9 @@ const MyOrders = () => {
         <p>No tienes productos en tu pedido.</p>
       ) : (
         <>
+ <div className="d-flex justify-content-between mt-3">
+            <h4>Total: {Math.floor(total)}</h4> {/* Mostrar el total sin decimales */}
+          </div>
           <div className="row">
             {cart.map((order) => (
               <div key={order.id_producto} className="col-12 col-md-4 mb-4">
