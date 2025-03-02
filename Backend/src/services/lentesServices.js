@@ -21,16 +21,14 @@ const lentesServices = {
         }
     },
 
-    addLente: async (nombre, descripcion, precio, stock, id_categoria, imagen, habilitado) => {
+    addLente: async (nombre, descripcion, precio, stock, imagen) => {
         try {
             const { rows } = await pool.query(lentesQueries.addLente, [
-                nombre, 
-                descripcion, 
-                precio, 
-                stock, 
-                id_categoria, 
-                imagen, 
-                habilitado
+              nombre, 
+              descripcion, 
+              precio, 
+              stock, 
+              imagen
             ]);
             return rows[0]
         } catch (error) {
@@ -38,18 +36,16 @@ const lentesServices = {
         }
     },
 
-    updateLente: async (nombre, descripcion, precio, stock, id_categoria, imagen, habilitado, id_producto) => {
+    updateLente: async (nombre, descripcion, precio, stock, imagen, id_producto) => {
         try {
             // Ejecutar la consulta para actualizar el producto
             const { rows } = await pool.query(lentesQueries.updateLente, [
-                nombre, 
-                descripcion, 
-                precio, 
-                stock, 
-                id_categoria, 
-                imagen, 
-                habilitado,
-                id_producto
+              nombre, 
+              descripcion, 
+              precio, 
+              stock, 
+              imagen, 
+              id_producto  
             ])
             return rows[0]
         } catch (error) {

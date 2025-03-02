@@ -29,13 +29,13 @@ const lentesControllers = {
     },
 
     addLente: async (req, res) => {
-        const { nombre, descripcion, precio, stock, id_categoria, imagen, habilitado } = req.body;
-        if (!nombre || !descripcion || !precio || !stock || !id_categoria || !imagen || habilitado === undefined) {
+        const { nombre, descripcion, precio, stock, imagen } = req.body;
+        if (!nombre || !descripcion || !precio || !stock || !imagen) {
             return res.status(400).json({ message: 'Faltan datos' })
         }
         try {
             const productoCreado = await lentesServices.addLente(
-                nombre, descripcion, precio, stock, id_categoria, imagen, habilitado
+                nombre, descripcion, precio, stock, imagen
             )
             res.status(201).json({ product: productoCreado, message: 'Producto creado' });
         } catch (error) {
@@ -46,14 +46,14 @@ const lentesControllers = {
 
     updateLente: async (req, res) => {
         const { id } = req.params
-        const { nombre, descripcion, precio, stock, id_categoria, imagen, habilitado } = req.body;
+        const { nombre, descripcion, precio, stock, imagen } = req.body;
 
-        if (!nombre || !descripcion || !precio || !stock || !id_categoria || !imagen || habilitado === undefined) {
+        if (!nombre || !descripcion || !precio || !stock || !imagen) {
             return res.status(400).json({ message: 'Faltan datos' });
         }
         try {
             const productUpdated = await lentesServices.updateLente(
-                nombre, descripcion, precio, stock, id_categoria, imagen, habilitado, id
+                nombre, descripcion, precio, stock, imagen, id
             )
             // Verificamos si se encontró el producto para actualizar
             if (!productUpdated) {

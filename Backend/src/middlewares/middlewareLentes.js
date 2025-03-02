@@ -26,8 +26,8 @@ const productExists = async (req, res, next) => {
 
 // Middleware para validar los datos del producto (usado en `addLente` y `updateLente`)
 const validateProductData = (req, res, next) => {
-    const { nombre, descripcion, precio, stock, id_categoria, imagen, habilitado } = req.body;
-    if (!nombre || !descripcion || !precio || !stock || !id_categoria || !imagen || habilitado === undefined) {
+    const { nombre, descripcion, precio, stock, imagen } = req.body;
+    if (!nombre || !descripcion || !precio || !stock || !imagen) {
         return res.status(400).json({ message: 'Faltan datos para crear o actualizar el producto' });
     }
     next();
