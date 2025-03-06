@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import api from '../services/api';
 import './MySales.css';
 
 const MySales = () => {
@@ -10,12 +11,8 @@ const MySales = () => {
     // Función para obtener los pedidos
     const fetchPedidos = async () => {
       try {
-        const response = await fetch('http://localhost:3000/pedidos');
-        if (!response.ok) {
-          throw new Error('Error al obtener los pedidos');
-        }
-        const data = await response.json();
-        setPedidos(data);
+        const response = await api.get('/pedidos');
+        setPedidos(response.data); 
       } catch (err) {
         setError(err.message);
       } finally {
@@ -24,7 +21,7 @@ const MySales = () => {
     };
 
     fetchPedidos();
-  }, []); // Este useEffect se ejecuta solo una vez al cargar el componente
+  }, []); 
 
   if (loading) {
     return <div>Loading...</div>; 
